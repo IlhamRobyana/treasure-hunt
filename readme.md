@@ -2,7 +2,7 @@
 Built with Golang.
 ## Installation
 Make sure Golang and is already installed.
-Clone the repo to the directory ```{user}/go/src/github.com/ilhamrobyana/tennis-player```
+Clone the repo to the directory ```{user}/go/src/github.com/ilhamrobyana/treasure-hunt```
 ## Peresquite
 
 No Peresquites needed, built only with native golang libraries
