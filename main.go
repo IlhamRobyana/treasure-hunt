@@ -8,17 +8,20 @@ import (
 	"time"
 )
 
+//the coords used for the map coordinates
 type coords struct {
 	x int
 	y int
 }
 
+// check if there's an error
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
+// load map from the text file
 func loadMap() (treasureMap string) {
 	content, err := ioutil.ReadFile("map.txt")
 	check(err)
@@ -26,6 +29,7 @@ func loadMap() (treasureMap string) {
 	return
 }
 
+// get the possible coords of the treasure
 func getPossibleCoords() (possibleCoords []coords) {
 	possibleCoords = []coords{
 		{
@@ -52,6 +56,7 @@ func getPossibleCoords() (possibleCoords []coords) {
 	return
 }
 
+// place the possible coords on the map
 func placePossibleCoords(treasureMap *string, possibleCoords []coords) {
 	temp := []byte(*treasureMap)
 	for i := 0; i < len(possibleCoords); i++ {
@@ -62,6 +67,7 @@ func placePossibleCoords(treasureMap *string, possibleCoords []coords) {
 	*treasureMap = string(temp)
 }
 
+// make the map into 2d array
 func generate2DMap(treasureMap string) [][]byte {
 	var map2D [][]byte
 	for i := 0; i < 6; i++ {
@@ -71,6 +77,7 @@ func generate2DMap(treasureMap string) [][]byte {
 	return map2D
 }
 
+// prints the map on console
 func printMap(map2d [][]byte) {
 	fmt.Println(" 01234567")
 	for i := 0; i < 6; i++ {
@@ -79,6 +86,7 @@ func printMap(map2d [][]byte) {
 	}
 }
 
+// prints the instructions and map at the beginning
 func printInit(map2D [][]byte, possibleCoords []coords) {
 	fmt.Println("Find a treasure within this map!")
 	printMap(map2D)
@@ -92,6 +100,7 @@ func printInit(map2D [][]byte, possibleCoords []coords) {
 	fmt.Println("\nYou need to move north, and then east, and then south in order")
 }
 
+// get the randomized treasure spot
 func getTreasureSpot(possibleCoords []coords) coords {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
@@ -99,6 +108,7 @@ func getTreasureSpot(possibleCoords []coords) coords {
 	return possibleCoords[element]
 }
 
+// move the player according to cycle and steps
 func move(cycle, steps int, currentSpot *coords, map2D [][]byte) ([][]byte, bool) {
 	prevX := currentSpot.x
 	prevY := currentSpot.y
@@ -140,6 +150,7 @@ func move(cycle, steps int, currentSpot *coords, map2D [][]byte) ([][]byte, bool
 	return map2D, true
 }
 
+// the game loop
 func hunt(map2D [][]byte, possibleCoords []coords, treasureSpot coords) bool {
 	currentSpot := coords{1, 4}
 	directions := [3]string{"north", "east", "south"}
@@ -165,6 +176,7 @@ func hunt(map2D [][]byte, possibleCoords []coords, treasureSpot coords) bool {
 	}
 }
 
+// prints the result of the game
 func printResult(result bool, treasureSpot coords) {
 	if result {
 		fmt.Println("Congratulations! You found the treasure!")
